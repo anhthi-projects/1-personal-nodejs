@@ -19,12 +19,6 @@ export class UsersService {
     return targetUser;
   }
 
-  createUser(payload: CreateUserDto) {
-    return this.prisma.user.create({
-      data: payload,
-    });
-  }
-
   async updateUser(id: string, payload: UpdateUserDto) {
     const targetUser = await this.prisma.user.findUnique({
       where: { id },
