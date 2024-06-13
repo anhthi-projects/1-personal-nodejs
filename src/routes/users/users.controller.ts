@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Put,
+  UseInterceptors,
+} from '@nestjs/common';
+import { UserSensitiveInterceptor } from 'src/interceptors/user-sensi.interceptor';
 
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
@@ -8,6 +16,7 @@ export class UsersController {
   constructor(private userService: UsersService) {}
 
   @Get(':id')
+  @UseInterceptors(UserSensitiveInterceptor)
   getUserById(@Param('id') id: string) {
     return this.userService.getUserById(id);
   }
