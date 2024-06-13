@@ -9,6 +9,7 @@ import {
 import { GetHeaderUser } from 'src/decorators/get-header-user';
 import { AccessTokenGuard } from 'src/guards/at.guard';
 import { RefreshTokenGuard } from 'src/guards/rt.guard';
+import { IsPublic } from 'src/metadata/public.metadata';
 
 import { CreateUserDto } from '../users/dtos/create-user.dto';
 
@@ -20,12 +21,14 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('sign-up')
+  @IsPublic()
   @HttpCode(HttpStatus.CREATED)
   signUp(@Body() userPayload: CreateUserDto) {
     return this.authService.signUp(userPayload);
   }
 
   @Post('sign-in')
+  @IsPublic()
   @HttpCode(HttpStatus.OK)
   signIn(@Body() payload: SignInDto) {
     return this.authService.signIn(payload);
