@@ -3,14 +3,19 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/app/prisma/prisma.service';
-import { CreateUserDto } from '../users/dtos/create-user.dto';
-import { hashData } from 'src/utils/helpers';
-import { TokensResponse } from './auth.types';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import appConfigFn from 'src/app/app.config';
+import { PrismaService } from 'src/app/prisma/prisma.service';
+import { hashData } from 'src/utils/helpers';
+
+import { CreateUserDto } from '../users/dtos/create-user.dto';
+
+import { TokensResponse } from './auth.types';
 import { getTokens } from './auth.utils';
 import { SignInDto } from './dtos/sign-in.dto';
-import * as bcrypt from 'bcrypt';
+
+const appConfig = appConfigFn();
 
 @Injectable()
 export class AuthService {
@@ -104,7 +109,7 @@ export class AuthService {
     }
 
     const isRefreshTokenValid = await this.jwtService.verify(refreshToken, {
-      secret: 'rt-secret',
+      secret: appConfig.jwt.refreshTokenSecret,
     });
     const isRtMatches = await bcrypt.compare(refreshToken, user.refreshToken);
 

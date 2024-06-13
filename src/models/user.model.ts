@@ -5,6 +5,7 @@ import {
   IsNumber,
   IsString,
 } from 'class-validator';
+
 import { ProjectModel } from './project.model';
 
 export class UserModel {

@@ -1,4 +1,5 @@
 import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+
 import { UserModel } from './user.model';
 
 export class ProjectModel {

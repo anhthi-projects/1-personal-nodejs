@@ -6,12 +6,14 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { CreateUserDto } from '../users/dtos/create-user.dto';
-import { SignInDto } from './dtos/sign-in.dto';
 import { GetHeaderUser } from 'src/decorators/get-header-user';
 import { AccessTokenGuard } from 'src/guards/at.guard';
 import { RefreshTokenGuard } from 'src/guards/rt.guard';
+
+import { CreateUserDto } from '../users/dtos/create-user.dto';
+
+import { AuthService } from './auth.service';
+import { SignInDto } from './dtos/sign-in.dto';
 
 @Controller('auth')
 export class AuthController {
