@@ -10,8 +10,8 @@ import { AuthService } from './auth.service';
 import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { SignInDto } from './dtos/sign-in.dto';
 import { GetHeaderUser } from 'src/decorators/get-header-user';
-import { AuthGuard } from '@nestjs/passport';
-import { AtStrategyGuard, RtStrategyGuard } from './auth.guards';
+import { AccessTokenGuard } from 'src/guards/at.guard';
+import { RefreshTokenGuard } from 'src/guards/rt.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -31,14 +31,14 @@ export class AuthController {
 
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AtStrategyGuard)
+  @UseGuards(AccessTokenGuard)
   logout(@GetHeaderUser('userId') userId: string) {
     return this.authService.logout(userId);
   }
 
   @Post('refresh-token')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(RtStrategyGuard)
+  @UseGuards(RefreshTokenGuard)
   refreshToken(
     @GetHeaderUser() user: { userId: string; refreshToken: string },
   ) {

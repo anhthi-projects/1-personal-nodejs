@@ -106,9 +106,9 @@ export class AuthService {
     const isRefreshTokenValid = await this.jwtService.verify(refreshToken, {
       secret: 'rt-secret',
     });
-    const rtMatches = await bcrypt.compare(refreshToken, user.refreshToken);
+    const isRtMatches = await bcrypt.compare(refreshToken, user.refreshToken);
 
-    if (!isRefreshTokenValid || !rtMatches) {
+    if (!isRefreshTokenValid || !isRtMatches) {
       throw new ForbiddenException('Refresh token is invalid or not matched');
     }
 
