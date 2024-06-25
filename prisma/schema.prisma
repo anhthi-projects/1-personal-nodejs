@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,25 +8,39 @@ datasource db {
 }
 
 model User {
-  id              String        @id  @default(uuid()) 
-  email           String        @unique   
+  id              String        @id             @default(uuid()) 
+  username        String        @unique         
   password        String
   name            String 
-  yearOfExp       Int           @default(0) 
-  aboutMe         String 
+  email           String        @unique         
+  phone           String?       @unique         
+  jobPosition     String?
+  yearOfExp       Int?          @default(0) 
+  aboutMe         String? 
+  cvUrl           String?
+  tags            String[]
   projects        Project[]
+  socialNetworks  SocialNetWork[]
   refreshToken    String?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 }
 
 model Project {
-  id              String        @id  @default(uuid())
+  id              String        @id             @default(uuid())
   name            String
   description     String
   techStacks      String[]
-  userId          String
+  userId          String        
   owner           User          @relation(fields: [userId], references: [id])
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
+}
+
+model SocialNetWork {
+  id              String        @id             @default(uuid())
+  name            String
+  url             String        @unique
+  userId          String        
+  owner           User          @relation(fields: [userId], references: [id])
 }

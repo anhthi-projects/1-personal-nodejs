@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsDate, IsNotEmpty, IsString } from 'class-validator';
 
 import { UserModel } from './user.model';
 
@@ -13,6 +13,7 @@ export class ProjectModel {
   @IsNotEmpty()
   description: string;
 
+  @IsArray()
   @IsNotEmpty()
   techStacks: string[];
 

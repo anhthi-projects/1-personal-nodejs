@@ -1,19 +1,22 @@
 import {
+  IsArray,
   IsDate,
   IsEmail,
   IsNotEmpty,
   IsNumber,
   IsString,
+  IsUrl,
 } from 'class-validator';
 
 import { ProjectModel } from './project.model';
+import { SocialNetworkModel } from './social-networks';
 
 export class UserModel {
   id: string;
 
-  @IsEmail()
+  @IsString()
   @IsNotEmpty()
-  email: string;
+  username: string;
 
   @IsString()
   @IsNotEmpty()
@@ -23,15 +26,35 @@ export class UserModel {
   @IsNotEmpty()
   name: string;
 
-  @IsNumber()
+  @IsEmail()
   @IsNotEmpty()
-  yearOfExp: number;
+  email: string;
 
   @IsString()
-  @IsNotEmpty()
-  aboutMe: string;
+  phone?: string;
 
-  projects: ProjectModel[];
+  @IsString()
+  jobPosition?: string;
+
+  @IsNumber()
+  yearOfExp?: number;
+
+  @IsString()
+  aboutMe?: string;
+
+  @IsUrl()
+  cvUrl?: string;
+
+  @IsString({
+    each: true,
+  })
+  tags?: string[];
+
+  @IsArray()
+  projects?: ProjectModel[];
+
+  @IsArray()
+  socialNetworks?: SocialNetworkModel[];
 
   @IsString()
   refreshToken?: string;

@@ -9,11 +9,11 @@ import appConfigFn from 'src/app/app.config';
 import { PrismaService } from 'src/app/prisma/prisma.service';
 import { hashData } from 'src/utils/helpers';
 
-import { CreateUserDto } from '../users/dtos/create-user.dto';
+import { CreateUserDto } from '../users/users.dtos';
 
+import { SignInDto } from './auth.dto';
 import { TokensResponse } from './auth.types';
 import { getTokens } from './auth.utils';
-import { SignInDto } from './dtos/sign-in.dto';
 
 const appConfig = appConfigFn();
 
@@ -24,11 +24,15 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signUp(userPayload: CreateUserDto): Promise<TokensResponse> {
-    const hashedPassword = await hashData(userPayload.password);
+  /**
+   * Sign up for a new user
+   */
+
+  async signUp(payload: CreateUserDto): Promise<TokensResponse> {
+    const hashedPassword = await hashData(payload.password);
     const createdUser = await this.prisma.user.create({
       data: {
-        ...userPayload,
+        ...payload,
         password: hashedPassword,
       },
     });
@@ -47,6 +51,10 @@ export class AuthService {
       ...tokens,
     };
   }
+
+  /**
+   * Sign in
+   */
 
   async signIn(payload: SignInDto): Promise<TokensResponse> {
     const targetUser = await this.prisma.user.findUnique({
@@ -79,6 +87,10 @@ export class AuthService {
 
     return tokens;
   }
+
+  /**
+   * Log out
+   */
 
   logout(userId: string) {
     return this.prisma.user.update({
