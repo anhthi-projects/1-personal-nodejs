@@ -1,8 +1,9 @@
-import { ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
 
 import { AppModule } from './app/app.module';
+import { normalizeValidationErrors } from './filters/utils';
 
 declare const module: any;
 
@@ -11,7 +12,13 @@ async function bootstrap() {
 
   app.enableCors({ origin: '*' });
   app.setGlobalPrefix('api');
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (errors) => {
+        return new BadRequestException(normalizeValidationErrors(errors));
+      },
+    }),
+  );
   app.use(helmet());
   // app.use(csurf());
 

@@ -11,10 +11,10 @@ import { AccessTokenGuard } from 'src/guards/at.guard';
 import { RefreshTokenGuard } from 'src/guards/rt.guard';
 import { IsPublic } from 'src/metadata/public.metadata';
 
-import { CreateUserDto } from '../users/dtos/create-user.dto';
+import { CreateUserDto } from '../users/users.dtos';
 
+import { SignInDto } from './auth.dto';
 import { AuthService } from './auth.service';
-import { SignInDto } from './dtos/sign-in.dto';
 
 @Controller('auth')
 export class AuthController {

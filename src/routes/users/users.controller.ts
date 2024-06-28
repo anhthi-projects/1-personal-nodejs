@@ -6,9 +6,9 @@ import {
   Put,
   UseInterceptors,
 } from '@nestjs/common';
-import { UserSensitiveInterceptor } from 'src/interceptors/user-sensi.interceptor';
+import { UserSensitiveInterceptor } from 'src/interceptors/user-sensitive.interceptor';
 
-import { CreateUserDto } from './dtos/create-user.dto';
+import { CreateUserDto } from './users.dtos';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -22,6 +22,7 @@ export class UsersController {
   }
 
   @Put(':id')
+  @UseInterceptors(UserSensitiveInterceptor)
   updateUser(@Param('id') id: string, @Body() payload: CreateUserDto) {
     return this.userService.updateUser(id, payload);
   }

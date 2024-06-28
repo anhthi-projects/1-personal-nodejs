@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
-import { HttpExceptionFilter } from 'src/filters/exception.filter';
+import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
+import { PrismaClientExceptionFilter } from 'src/filters/prisma-exception.filter';
 import { AccessTokenGuard } from 'src/guards/at.guard';
 import { AuthModule } from 'src/routes/auth/auth.module';
 import { UsersModule } from 'src/routes/users/users.module';
@@ -26,6 +27,10 @@ import { PrismaModule } from './prisma/prisma.module';
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: PrismaClientExceptionFilter,
     },
   ],
 })

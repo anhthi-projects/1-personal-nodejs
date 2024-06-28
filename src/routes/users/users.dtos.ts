@@ -12,6 +12,7 @@ export class UpdateUserDto extends PartialType(
   OmitType(UserModel, [
     'id',
     'projects',
+    'socialNetworks',
     'refreshToken',
     'createdAt',
     'updatedAt',
