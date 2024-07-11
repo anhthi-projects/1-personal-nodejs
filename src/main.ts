@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
 
 import { AppModule } from './app/app.module';
-import { normalizeValidationErrors } from './filters/utils';
+import { normalizeValidationErrors } from './filters/http-exception/utils';
 
 declare const module: any;
 
