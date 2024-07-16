@@ -1,6 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -28,7 +29,7 @@ export class AuthService {
    * Sign up for a new user
    */
 
-  async signUp(payload: CreateUserDto): Promise<TokensResponse> {
+  async signUp(payload: CreateUserDto): Promise<CreateUserDto> {
     const hashedPassword = await hashData(payload.password);
     const createdUser = await this.prisma.user.create({
       data: {
@@ -44,12 +45,9 @@ export class AuthService {
         email: createdUser.email,
       },
     });
-    await this.updateRtToUser(createdUser.id, tokens.refresh_token);
 
-    return {
-      ...createdUser,
-      ...tokens,
-    };
+    await this.updateRtToUser(createdUser.id, tokens.refresh_token);
+    return createdUser;
   }
 
   /**
@@ -59,12 +57,12 @@ export class AuthService {
   async signIn(payload: SignInDto): Promise<TokensResponse> {
     const targetUser = await this.prisma.user.findUnique({
       where: {
-        email: payload.email,
+        username: payload.username,
       },
     });
 
     if (!targetUser) {
-      throw new NotFoundException('Email is not existed');
+      throw new NotFoundException('User cannot be found');
     }
 
     const isPasswordMatched = await bcrypt.compare(
@@ -83,8 +81,8 @@ export class AuthService {
         email: targetUser.email,
       },
     });
-    await this.updateRtToUser(targetUser.id, tokens.refresh_token);
 
+    await this.updateRtToUser(targetUser.id, tokens.refresh_token);
     return tokens;
   }
 

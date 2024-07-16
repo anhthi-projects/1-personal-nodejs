@@ -5,10 +5,12 @@ import {
   HttpStatus,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { GetHeaderUser } from 'src/decorators/get-header-user';
 import { AccessTokenGuard } from 'src/guards/at.guard';
 import { RefreshTokenGuard } from 'src/guards/rt.guard';
+import { RestrictUserInterceptor } from 'src/interceptors/restrict-user.interceptor';
 import { IsPublic } from 'src/metadata/public.metadata';
 
 import { CreateUserDto } from '../users/users.dtos';
@@ -23,6 +25,7 @@ export class AuthController {
   @Post('sign-up')
   @IsPublic()
   @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(RestrictUserInterceptor)
   signUp(@Body() userPayload: CreateUserDto) {
     return this.authService.signUp(userPayload);
   }

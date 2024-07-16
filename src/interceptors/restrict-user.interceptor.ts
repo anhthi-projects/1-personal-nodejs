@@ -13,7 +13,7 @@ interface UserResponse {
 }
 
 @Injectable()
-export class UserSensitiveInterceptor
+export class RestrictUserInterceptor
   implements NestInterceptor<User, UserResponse>
 {
   intercept(
@@ -25,6 +25,8 @@ export class UserSensitiveInterceptor
         ...data,
         password: undefined,
         refreshToken: undefined,
+        createdAt: undefined,
+        updatedAt: undefined,
       })),
     );
   }

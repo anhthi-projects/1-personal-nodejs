@@ -3,46 +3,42 @@ import {
   Catch,
   ArgumentsHost,
   HttpException,
+  Logger,
 } from '@nestjs/common';
+import { ValidationError } from 'class-validator';
 import { Request, Response } from 'express';
 import { AppException } from 'src/types/exception';
 
 interface NormalizeAppExceptionParams {
   url: string;
-  statusCode: number;
   exceptionResponse: string | object;
 }
 
 const normalizeAppException = ({
   url,
-  statusCode,
   exceptionResponse,
 }: NormalizeAppExceptionParams): AppException => {
-  /**
-   * System Exception
-   */
+  const { message, statusCode, error } = exceptionResponse as any;
 
-  if (typeof exceptionResponse === 'string') {
+  /* System error */
+  if (typeof message === 'string') {
     return {
       url,
       message: [
         {
           details: {
             code: statusCode.toString(),
-            description: exceptionResponse,
+            description: error,
           },
         },
       ],
       statusCode,
+      statusTitle: 'System Error',
     };
   }
 
-  /**
-   * Validation Exception
-   */
-
-  if (typeof exceptionResponse === 'object') {
-    const { message, error } = exceptionResponse as any;
+  /* Validation error */
+  if (Array.isArray(message)) {
     return {
       url,
       message,
@@ -64,7 +60,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     const appException: AppException = normalizeAppException({
       url: request.url,
-      statusCode: status,
       exceptionResponse,
     });
 
