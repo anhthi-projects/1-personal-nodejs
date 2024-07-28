@@ -17,6 +17,7 @@ model User {
   jobPosition     String?
   yearOfExp       Int?          @default(0) 
   aboutMe         String? 
+  avatarUrl       String?
   cvUrl           String?
   tags            String[]
   projects        Project[]

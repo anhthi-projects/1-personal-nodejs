@@ -43,6 +43,9 @@ export class UserModel {
   aboutMe?: string;
 
   @IsUrl()
+  avatarUrl?: string;
+
+  @IsUrl()
   cvUrl?: string;
 
   @IsString({
