@@ -1,18 +1,18 @@
 import {
   ForbiddenException,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import appConfigFn from 'src/app/app.config';
 import { PrismaService } from 'src/app/prisma/prisma.service';
-import { hashData } from 'src/utils/helpers';
+import { UserModel } from 'src/models/user.model';
+import { getRandomString, hashData } from 'src/utils/helpers';
 
 import { CreateUserDto } from '../users/users.dtos';
 
-import { SignInDto } from './auth.dto';
+import { LoginDto } from './auth.dto';
 import { TokensResponse } from './auth.types';
 import { getTokens } from './auth.utils';
 
@@ -29,11 +29,13 @@ export class AuthService {
    * Sign up for a new user
    */
 
-  async signUp(payload: CreateUserDto): Promise<CreateUserDto> {
+  async signUp(payload: CreateUserDto): Promise<UserModel> {
+    const username = payload.name.split(' ').join('_').toLowerCase();
     const hashedPassword = await hashData(payload.password);
     const createdUser = await this.prisma.user.create({
       data: {
         ...payload,
+        username: `${username} ${getRandomString()}`,
         password: hashedPassword,
       },
     });
@@ -54,10 +56,10 @@ export class AuthService {
    * Sign in
    */
 
-  async signIn(payload: SignInDto): Promise<TokensResponse> {
+  async login(payload: LoginDto): Promise<TokensResponse> {
     const targetUser = await this.prisma.user.findUnique({
       where: {
-        username: payload.username,
+        email: payload.email,
       },
     });
 

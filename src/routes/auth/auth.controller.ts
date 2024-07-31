@@ -7,21 +7,40 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { GetHeaderUser } from 'src/decorators/get-header-user';
 import { AccessTokenGuard } from 'src/guards/at.guard';
 import { RefreshTokenGuard } from 'src/guards/rt.guard';
 import { RestrictUserInterceptor } from 'src/interceptors/restrict-user.interceptor';
 import { IsPublic } from 'src/metadata/public.metadata';
+import { UserModel } from 'src/models/user.model';
 
 import { CreateUserDto } from '../users/users.dtos';
 
-import { SignInDto } from './auth.dto';
+import { LoginDto } from './auth.dto';
 import { AuthService } from './auth.service';
+import { TokensResponse } from './auth.types';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  /**
+   * Sign up
+   */
+
+  @ApiOperation({
+    summary: 'Sign up a new user',
+  })
+  @ApiCreatedResponse({
+    type: UserModel,
+  })
   @Post('sign-up')
   @IsPublic()
   @HttpCode(HttpStatus.CREATED)
@@ -30,13 +49,30 @@ export class AuthController {
     return this.authService.signUp(userPayload);
   }
 
-  @Post('sign-in')
+  /**
+   * Login
+   */
+
+  @ApiOperation({
+    summary: 'Login to access Dashboard',
+  })
+  @ApiOkResponse({
+    type: TokensResponse,
+  })
+  @Post('login')
   @IsPublic()
   @HttpCode(HttpStatus.OK)
-  signIn(@Body() payload: SignInDto) {
-    return this.authService.signIn(payload);
+  login(@Body() payload: LoginDto) {
+    return this.authService.login(payload);
   }
 
+  /**
+   * Logout
+   */
+
+  @ApiOperation({
+    summary: 'Logout',
+  })
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AccessTokenGuard)
@@ -44,6 +80,16 @@ export class AuthController {
     return this.authService.logout(userId);
   }
 
+  /**
+   * Refresh token
+   */
+
+  @ApiOperation({
+    summary: 'Get a new access_token',
+  })
+  @ApiOkResponse({
+    type: TokensResponse,
+  })
   @Post('refresh-token')
   @HttpCode(HttpStatus.OK)
   @UseGuards(RefreshTokenGuard)

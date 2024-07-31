@@ -1,5 +1,6 @@
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 
 import { AppModule } from './app/app.module';
@@ -21,6 +22,18 @@ async function bootstrap() {
   );
   app.use(helmet());
   // app.use(csurf());
+
+  /**
+   * Swagger
+   */
+
+  const config = new DocumentBuilder()
+    .setTitle('Personal site')
+    .setDescription('Personal site API description')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.PORT);
 

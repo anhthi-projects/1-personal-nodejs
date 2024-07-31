@@ -1,9 +1,9 @@
-export type JwtPayload = {
+export class JwtPayload {
   id: string;
   email: string;
-};
+}
 
-export type TokensResponse = {
+export class TokensResponse {
   access_token: string;
   refresh_token: string;
-};
+}

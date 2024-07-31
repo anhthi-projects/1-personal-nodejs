@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsArray,
   IsDate,
@@ -16,41 +17,52 @@ export class UserModel {
 
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   username: string;
 
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   password: string;
 
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   name: string;
 
   @IsEmail()
   @IsNotEmpty()
+  @ApiProperty()
   email: string;
 
   @IsString()
+  @ApiProperty()
   phone?: string;
 
   @IsString()
+  @ApiProperty()
   jobPosition?: string;
 
   @IsNumber()
+  @ApiProperty()
   yearOfExp?: number;
 
   @IsString()
+  @ApiProperty()
   aboutMe?: string;
 
   @IsUrl()
+  @ApiProperty()
   avatarUrl?: string;
 
   @IsUrl()
+  @ApiProperty()
   cvUrl?: string;
 
   @IsString({
     each: true,
   })
+  @ApiProperty()
   tags?: string[];
 
   @IsArray()
@@ -63,8 +75,8 @@ export class UserModel {
   refreshToken?: string;
 
   @IsDate()
-  createdAt?: string;
+  createdAt?: Date;
 
   @IsDate()
-  updatedAt?: string;
+  updatedAt?: Date;
 }
