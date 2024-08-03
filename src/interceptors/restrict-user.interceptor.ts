@@ -24,7 +24,7 @@ export class RestrictUserInterceptor
       map((data) => ({
         ...data,
         password: undefined,
-        refreshToken: undefined,
+        storedRefreshToken: undefined,
         createdAt: undefined,
         updatedAt: undefined,
       })),

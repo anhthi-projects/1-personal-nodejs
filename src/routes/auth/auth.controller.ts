@@ -22,7 +22,7 @@ import { UserModel } from 'src/models/user.model';
 
 import { CreateUserDto } from '../users/users.dtos';
 
-import { LoginDto } from './auth.dto';
+import { SignInDto } from './auth.dto';
 import { AuthService } from './auth.service';
 import { TokensResponse } from './auth.types';
 
@@ -41,7 +41,7 @@ export class AuthController {
   @ApiCreatedResponse({
     type: UserModel,
   })
-  @Post('sign-up')
+  @Post('signup')
   @IsPublic()
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(RestrictUserInterceptor)
@@ -50,34 +50,35 @@ export class AuthController {
   }
 
   /**
-   * Login
+   * Sign In
    */
 
   @ApiOperation({
-    summary: 'Login to access Dashboard',
+    summary: 'Sign in to get accessToken and refreshToken',
   })
   @ApiOkResponse({
     type: TokensResponse,
   })
-  @Post('login')
+  @Post('signin')
   @IsPublic()
+  @UseInterceptors(RestrictUserInterceptor)
   @HttpCode(HttpStatus.OK)
-  login(@Body() payload: LoginDto) {
-    return this.authService.login(payload);
+  signIn(@Body() payload: SignInDto) {
+    return this.authService.signIn(payload);
   }
 
   /**
-   * Logout
+   * Sign Out
    */
 
   @ApiOperation({
-    summary: 'Logout',
+    summary: 'Sign out',
   })
-  @Post('logout')
+  @Post('signout')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AccessTokenGuard)
-  logout(@GetHeaderUser('userId') userId: string) {
-    return this.authService.logout(userId);
+  signOut(@GetHeaderUser('userId') userId: string) {
+    return this.authService.signOut(userId);
   }
 
   /**
@@ -85,7 +86,7 @@ export class AuthController {
    */
 
   @ApiOperation({
-    summary: 'Get a new access_token',
+    summary: 'Get a new accessToken',
   })
   @ApiOkResponse({
     type: TokensResponse,

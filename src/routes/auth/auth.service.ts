@@ -12,7 +12,7 @@ import { getRandomString, hashData } from 'src/utils/helpers';
 
 import { CreateUserDto } from '../users/users.dtos';
 
-import { LoginDto } from './auth.dto';
+import { SignInDto } from './auth.dto';
 import { TokensResponse } from './auth.types';
 import { getTokens } from './auth.utils';
 
@@ -35,7 +35,7 @@ export class AuthService {
     const createdUser = await this.prisma.user.create({
       data: {
         ...payload,
-        username: `${username} ${getRandomString()}`,
+        username: `${username}_${getRandomString()}`,
         password: hashedPassword,
       },
     });
@@ -48,7 +48,7 @@ export class AuthService {
       },
     });
 
-    await this.updateRtToUser(createdUser.id, tokens.refresh_token);
+    await this.updateRtToUser(createdUser.id, tokens.refreshToken);
     return createdUser;
   }
 
@@ -56,7 +56,7 @@ export class AuthService {
    * Sign in
    */
 
-  async login(payload: LoginDto): Promise<TokensResponse> {
+  async signIn(payload: SignInDto): Promise<TokensResponse & UserModel> {
     const targetUser = await this.prisma.user.findUnique({
       where: {
         email: payload.email,
@@ -84,22 +84,25 @@ export class AuthService {
       },
     });
 
-    await this.updateRtToUser(targetUser.id, tokens.refresh_token);
-    return tokens;
+    await this.updateRtToUser(targetUser.id, tokens.refreshToken);
+    return {
+      ...tokens,
+      ...targetUser,
+    };
   }
 
   /**
-   * Log out
+   * Sign Out
    */
 
-  logout(userId: string) {
-    return this.prisma.user.update({
+  signOut(userId: string) {
+    this.prisma.user.update({
       data: {
-        refreshToken: null,
+        storedRefreshToken: null,
       },
       where: {
         id: userId,
-        refreshToken: {
+        storedRefreshToken: {
           not: null,
         },
       },
@@ -136,7 +139,7 @@ export class AuthService {
         email: user.email,
       },
     });
-    await this.updateRtToUser(user.id, newTokens.refresh_token);
+    await this.updateRtToUser(user.id, newTokens.refreshToken);
     return newTokens;
   }
 
@@ -144,7 +147,7 @@ export class AuthService {
     const hashedRefreshToken = await hashData(refreshToken);
     await this.prisma.user.update({
       data: {
-        refreshToken: hashedRefreshToken,
+        storedRefreshToken: hashedRefreshToken,
       },
       where: {
         id: userId,

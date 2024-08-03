@@ -9,9 +9,10 @@ CREATE TABLE "User" (
     "jobPosition" TEXT,
     "yearOfExp" INTEGER DEFAULT 0,
     "aboutMe" TEXT,
+    "avatarUrl" TEXT,
     "cvUrl" TEXT,
     "tags" TEXT[],
-    "refreshToken" TEXT,
+    "storedRefreshToken" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

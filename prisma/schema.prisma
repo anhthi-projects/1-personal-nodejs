@@ -8,40 +8,40 @@ datasource db {
 }
 
 model User {
-  id              String        @id             @default(uuid()) 
-  username        String        @unique         
-  password        String
-  name            String 
-  email           String        @unique         
-  phone           String?       @unique         
-  jobPosition     String?
-  yearOfExp       Int?          @default(0) 
-  aboutMe         String? 
-  avatarUrl       String?
-  cvUrl           String?
-  tags            String[]
-  projects        Project[]
-  socialNetworks  SocialNetWork[]
-  refreshToken    String?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  id                    String        @id             @default(uuid()) 
+  username              String        @unique         
+  password              String
+  name                  String 
+  email                 String        @unique         
+  phone                 String?       @unique         
+  jobPosition           String?
+  yearOfExp             Int?          @default(0) 
+  aboutMe               String? 
+  avatarUrl             String?
+  cvUrl                 String?
+  tags                  String[]
+  projects              Project[]
+  socialNetworks        SocialNetWork[]
+  storedRefreshToken    String?
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
 }
 
 model Project {
-  id              String        @id             @default(uuid())
-  name            String
-  description     String
-  techStacks      String[]
-  userId          String        
-  owner           User          @relation(fields: [userId], references: [id])
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  id                    String        @id             @default(uuid())
+  name                  String
+  description           String
+  techStacks            String[]
+  userId                String        
+  owner                 User          @relation(fields: [userId], references: [id])
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
 }
 
 model SocialNetWork {
-  id              String        @id             @default(uuid())
-  name            String
-  url             String        @unique
-  userId          String        
-  owner           User          @relation(fields: [userId], references: [id])
+  id                    String        @id             @default(uuid())
+  name                  String
+  url                   String        @unique
+  userId                String        
+  owner                 User          @relation(fields: [userId], references: [id])
 }

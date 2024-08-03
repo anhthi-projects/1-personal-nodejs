@@ -72,7 +72,7 @@ export class UserModel {
   socialNetworks?: SocialNetworkModel[];
 
   @IsString()
-  refreshToken?: string;
+  storedRefreshToken?: string;
 
   @IsDate()
   createdAt?: Date;

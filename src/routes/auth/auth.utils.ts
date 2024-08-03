@@ -28,5 +28,5 @@ export const getTokens = async ({
     }),
   ]);
 
-  return { access_token: at, refresh_token: rt };
+  return { accessToken: at, refreshToken: rt };
 };
