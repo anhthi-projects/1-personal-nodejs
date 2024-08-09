@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { RestrictUserInterceptor } from 'src/interceptors/restrict-user.interceptor';
+import { IsPublic } from 'src/metadata/public.metadata';
 import { UserModel } from 'src/models/user.model';
 
 import { CreateUserDto } from './users.dtos';
@@ -31,6 +32,7 @@ export class UsersController {
     type: UserModel,
   })
   @Get(':id')
+  @IsPublic()
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(RestrictUserInterceptor)
   getUserById(@Param('id') id: string) {

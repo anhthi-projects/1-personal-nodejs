@@ -12,7 +12,7 @@ export class UpdateUserDto extends PartialType(
     'id',
     'projects',
     'socialNetworks',
-    'refreshToken',
+    'storedRefreshToken',
     'createdAt',
     'updatedAt',
   ] as const),

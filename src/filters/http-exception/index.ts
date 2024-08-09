@@ -3,9 +3,7 @@ import {
   Catch,
   ArgumentsHost,
   HttpException,
-  Logger,
 } from '@nestjs/common';
-import { ValidationError } from 'class-validator';
 import { Request, Response } from 'express';
 import { AppException } from 'src/types/exception';
 

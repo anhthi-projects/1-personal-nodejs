@@ -8,6 +8,7 @@ CREATE TABLE "User" (
     "phone" TEXT,
     "jobPosition" TEXT,
     "yearOfExp" INTEGER DEFAULT 0,
+    "briefIntro" TEXT,
     "aboutMe" TEXT,
     "avatarUrl" TEXT,
     "cvUrl" TEXT,

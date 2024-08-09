@@ -49,6 +49,10 @@ export class UserModel {
 
   @IsString()
   @ApiProperty()
+  briefIntro?: string;
+
+  @IsString()
+  @ApiProperty()
   aboutMe?: string;
 
   @IsUrl()

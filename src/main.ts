@@ -15,6 +15,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
     new ValidationPipe({
+      skipMissingProperties: true,
       exceptionFactory: (errors) => {
         return new BadRequestException(normalizeValidationErrors(errors));
       },

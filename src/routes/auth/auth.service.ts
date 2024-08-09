@@ -119,14 +119,17 @@ export class AuthService {
       },
     });
 
-    if (!user || !user.refreshToken) {
+    if (!user || !user.storedRefreshToken) {
       throw new ForbiddenException('Forbidden access');
     }
 
     const isRefreshTokenValid = await this.jwtService.verify(refreshToken, {
       secret: appConfig.jwt.refreshTokenSecret,
     });
-    const isRtMatches = await bcrypt.compare(refreshToken, user.refreshToken);
+    const isRtMatches = await bcrypt.compare(
+      refreshToken,
+      user.storedRefreshToken,
+    );
 
     if (!isRefreshTokenValid || !isRtMatches) {
       throw new ForbiddenException('Refresh token is invalid or not matched');

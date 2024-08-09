@@ -20,7 +20,7 @@ export const getTokens = async ({
   const [at, rt] = await Promise.all([
     jwtService.signAsync(jwtPayload, {
       secret: appConfig.jwt.accessTokenSecret,
-      expiresIn: 60 * 15, // 15 mins
+      expiresIn: 60 * 60 * 24, // 1 day
     }),
     jwtService.signAsync(jwtPayload, {
       secret: appConfig.jwt.refreshTokenSecret,
