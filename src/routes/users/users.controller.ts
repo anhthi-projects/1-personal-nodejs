@@ -35,8 +35,8 @@ export class UsersController {
   @IsPublic()
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(RestrictUserInterceptor)
-  getUserById(@Param('id') id: string) {
-    return this.userService.getUserById(id);
+  getUserById(@Param('id') userId: string) {
+    return this.userService.getUserById(userId);
   }
 
   /**
@@ -51,7 +51,7 @@ export class UsersController {
   })
   @Put(':id')
   @UseInterceptors(RestrictUserInterceptor)
-  updateUserById(@Param('id') id: string, @Body() payload: CreateUserDto) {
-    return this.userService.updateUserById(id, payload);
+  updateUserById(@Param('id') userId: string, @Body() payload: CreateUserDto) {
+    return this.userService.updateUserById(userId, payload);
   }
 }

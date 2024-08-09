@@ -18,5 +18,5 @@ export class SocialNetworkModel {
   userId: string;
 
   @IsNotEmpty()
-  owner: UserModel;
+  user?: UserModel;
 }

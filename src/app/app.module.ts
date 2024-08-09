@@ -5,6 +5,7 @@ import { HttpExceptionFilter } from 'src/filters/http-exception';
 import { PrismaClientExceptionFilter } from 'src/filters/prisma-exception';
 import { AccessTokenGuard } from 'src/guards/at.guard';
 import { AuthModule } from 'src/routes/auth/auth.module';
+import { SocialNetworksModule } from 'src/routes/social-networks/social-networks.module';
 import { UsersModule } from 'src/routes/users/users.module';
 
 import appConfig from './app.config';
@@ -15,9 +16,10 @@ import { PrismaModule } from './prisma/prisma.module';
     ConfigModule.forRoot({
       load: [appConfig],
     }),
+    PrismaModule,
     AuthModule,
     UsersModule,
-    PrismaModule,
+    SocialNetworksModule,
   ],
   providers: [
     {

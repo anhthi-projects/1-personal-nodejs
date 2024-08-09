@@ -34,7 +34,7 @@ model Project {
   description           String
   techStacks            String[]
   userId                String        
-  owner                 User          @relation(fields: [userId], references: [id])
+  user                  User?         @relation(fields: [userId], references: [id])
   createdAt             DateTime      @default(now())
   updatedAt             DateTime      @updatedAt
 }
@@ -44,5 +44,5 @@ model SocialNetWork {
   name                  String
   url                   String        @unique
   userId                String        
-  owner                 User          @relation(fields: [userId], references: [id])
+  user                  User?         @relation(fields: [userId], references: [id])
 }

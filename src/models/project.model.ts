@@ -22,11 +22,11 @@ export class ProjectModel {
   userId: string;
 
   @IsNotEmpty()
-  owner: UserModel;
+  user?: UserModel;
 
   @IsDate()
-  createdAt?: string;
+  createdAt?: Date;
 
   @IsDate()
-  updatedAt?: string;
+  updatedAt?: Date;
 }

@@ -8,9 +8,17 @@ import { UpdateUserDto } from './users.dtos';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async getUserById(id: string): Promise<UserModel> {
+  /**
+   * getUserById
+   */
+
+  async getUserById(userId: string): Promise<UserModel> {
     const targetUser = await this.prisma.user.findUnique({
-      where: { id },
+      where: { id: userId },
+      include: {
+        socialNetworks: true,
+        projects: true,
+      },
     });
 
     if (!targetUser) {
@@ -20,9 +28,15 @@ export class UsersService {
     return targetUser;
   }
 
-  async updateUserById(id: string, payload: UpdateUserDto) {
+  /**
+   * updateUserById
+   */
+
+  async updateUserById(userId: string, payload: UpdateUserDto) {
     const targetUser = await this.prisma.user.findUnique({
-      where: { id },
+      where: {
+        id: userId,
+      },
     });
 
     if (!targetUser) {
@@ -32,7 +46,7 @@ export class UsersService {
     return this.prisma.user.update({
       data: payload,
       where: {
-        id,
+        id: userId,
       },
     });
   }
