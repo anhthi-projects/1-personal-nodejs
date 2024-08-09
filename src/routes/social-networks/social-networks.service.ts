@@ -8,6 +8,18 @@ export class SocialNetworksService {
   constructor(private prisma: PrismaService) {}
 
   /**
+   * getSocialNetworks
+   */
+
+  async getSocialNetworksByUserId(userId: string) {
+    return this.prisma.socialNetWork.findMany({
+      where: {
+        userId,
+      },
+    });
+  }
+
+  /**
    * createSocialNetwork
    */
 

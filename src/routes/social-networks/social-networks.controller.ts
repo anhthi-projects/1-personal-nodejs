@@ -2,12 +2,14 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
   Post,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { IsPublic } from 'src/metadata/public.metadata';
 import { SocialNetworkModel } from 'src/models/social-networks';
 import { UserModel } from 'src/models/user.model';
 
@@ -18,6 +20,19 @@ import { SocialNetworksService } from './social-networks.service';
 @Controller('social-networks')
 export class SocialNetworksController {
   constructor(private socialNetworksService: SocialNetworksService) {}
+
+  @ApiOperation({
+    summary: 'Get social networks by userId',
+  })
+  @ApiCreatedResponse({
+    type: SocialNetworkModel,
+  })
+  @IsPublic()
+  @Get('users/:userId')
+  @HttpCode(HttpStatus.OK)
+  getSocialNetworksByUserId(@Param('userId') userId: string) {
+    return this.socialNetworksService.getSocialNetworksByUserId(userId);
+  }
 
   /**
    * createSocialNetwork
@@ -48,6 +63,6 @@ export class SocialNetworksController {
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   deleteSocialNetwork(@Param('id') cnId: string) {
-    this.socialNetworksService.deleteSocialNetwork(cnId);
+    return this.socialNetworksService.deleteSocialNetwork(cnId);
   }
 }

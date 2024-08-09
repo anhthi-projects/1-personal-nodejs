@@ -9,12 +9,12 @@ export class UsersService {
   constructor(private prisma: PrismaService) {}
 
   /**
-   * getUserById
+   * getUserByUsername
    */
 
-  async getUserById(userId: string): Promise<UserModel> {
+  async getUserByUsername(username: string): Promise<UserModel> {
     const targetUser = await this.prisma.user.findUnique({
-      where: { id: userId },
+      where: { username },
       include: {
         socialNetworks: true,
         projects: true,

@@ -31,12 +31,12 @@ export class UsersController {
   @ApiOkResponse({
     type: UserModel,
   })
-  @Get(':id')
+  @Get(':username')
   @IsPublic()
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(RestrictUserInterceptor)
-  getUserById(@Param('id') userId: string) {
-    return this.userService.getUserById(userId);
+  getUserByUsername(@Param('username') username: string) {
+    return this.userService.getUserByUsername(username);
   }
 
   /**
