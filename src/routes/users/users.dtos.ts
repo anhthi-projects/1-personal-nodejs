@@ -17,3 +17,5 @@ export class UpdateUserDto extends PartialType(
     'updatedAt',
   ] as const),
 ) {}
+
+export class ChangeUsernameDto extends PickType(UserModel, ['username']) {}

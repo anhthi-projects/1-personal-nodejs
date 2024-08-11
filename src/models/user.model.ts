@@ -7,6 +7,8 @@ import {
   IsNumber,
   IsString,
   IsUrl,
+  MaxLength,
+  MinLength,
 } from 'class-validator';
 
 import { ProjectModel } from './project.model';
@@ -15,63 +17,67 @@ import { SocialNetworkModel } from './social-networks';
 export class UserModel {
   id: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @MinLength(4)
+  @MaxLength(30)
   username: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
   password: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
   name: string;
 
+  @ApiProperty()
   @IsEmail()
   @IsNotEmpty()
-  @ApiProperty()
   email: string;
 
-  @IsString()
   @ApiProperty()
+  @IsString()
   phone?: string;
 
-  @IsString()
   @ApiProperty()
+  @IsString()
   jobPosition?: string;
 
-  @IsNumber()
   @ApiProperty()
+  @IsNumber()
   yearOfExp?: number;
 
-  @IsString()
   @ApiProperty()
+  @IsString()
   briefIntro?: string;
 
-  @IsString()
   @ApiProperty()
+  @IsString()
   aboutMe?: string;
 
-  @IsUrl()
   @ApiProperty()
+  @IsUrl()
   avatarUrl?: string;
 
-  @IsUrl()
   @ApiProperty()
+  @IsUrl()
   cvUrl?: string;
 
+  @ApiProperty()
   @IsString({
     each: true,
   })
-  @ApiProperty()
   tags?: string[];
 
+  @ApiProperty()
   @IsArray()
   projects?: ProjectModel[];
 
+  @ApiProperty()
   @IsArray()
   socialNetworks?: SocialNetworkModel[];
 

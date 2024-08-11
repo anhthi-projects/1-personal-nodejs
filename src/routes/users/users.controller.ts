@@ -13,7 +13,7 @@ import { RestrictUserInterceptor } from 'src/interceptors/restrict-user.intercep
 import { IsPublic } from 'src/metadata/public.metadata';
 import { UserModel } from 'src/models/user.model';
 
-import { CreateUserDto } from './users.dtos';
+import { ChangeUsernameDto, CreateUserDto } from './users.dtos';
 import { UsersService } from './users.service';
 
 @ApiTags('users')
@@ -49,9 +49,27 @@ export class UsersController {
   @ApiOkResponse({
     type: UserModel,
   })
-  @Put(':id')
+  @Put(':id/update')
   @UseInterceptors(RestrictUserInterceptor)
   updateUserById(@Param('id') userId: string, @Body() payload: CreateUserDto) {
     return this.userService.updateUserById(userId, payload);
+  }
+
+  /**
+   * changeUsername
+   */
+
+  @ApiOperation({
+    summary: 'Check existing and change username',
+  })
+  @ApiOkResponse({
+    type: UserModel,
+  })
+  @Put(':id/change-username')
+  changeUsername(
+    @Param('id') userId: string,
+    @Body() payload: ChangeUsernameDto,
+  ) {
+    return this.userService.changeUsername(userId, payload);
   }
 }

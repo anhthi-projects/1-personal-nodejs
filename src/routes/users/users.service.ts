@@ -1,8 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/app/prisma/prisma.service';
 import { UserModel } from 'src/models/user.model';
 
-import { UpdateUserDto } from './users.dtos';
+import { ChangeUsernameDto, UpdateUserDto } from './users.dtos';
 
 @Injectable()
 export class UsersService {
@@ -47,6 +51,31 @@ export class UsersService {
       data: payload,
       where: {
         id: userId,
+      },
+    });
+  }
+
+  /**
+   * changeUsername
+   */
+
+  async changeUsername(userId: string, payload: ChangeUsernameDto) {
+    const isExisted = await this.prisma.user.findUnique({
+      where: {
+        username: payload.username,
+      },
+    });
+
+    if (isExisted) {
+      throw new ForbiddenException('The username is existed');
+    }
+
+    return this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        username: payload.username,
       },
     });
   }

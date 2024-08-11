@@ -44,7 +44,7 @@ export class SocialNetworksController {
   @ApiCreatedResponse({
     type: SocialNetworkModel,
   })
-  @Post('')
+  @Post('/create')
   @HttpCode(HttpStatus.CREATED)
   createSocialNetworks(@Body() payload: CreateSocialNetworkDto) {
     return this.socialNetworksService.createSocialNetwork(payload);
@@ -60,7 +60,7 @@ export class SocialNetworksController {
   @ApiCreatedResponse({
     type: UserModel,
   })
-  @Delete(':id')
+  @Delete(':id/delete')
   @HttpCode(HttpStatus.OK)
   deleteSocialNetwork(@Param('id') cnId: string) {
     return this.socialNetworksService.deleteSocialNetwork(cnId);
